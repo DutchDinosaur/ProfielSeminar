@@ -11,13 +11,10 @@ public class IKLeg : MonoBehaviour
     public Transform Pole;
     [SerializeField] Transform LastBone;
 
-    [SerializeField, Range(0, 1)] float SnapStrength = 1;
-
     [SerializeField] int iterations = 3;
-    [SerializeField] float delta = 0.01f;
-
+    [SerializeField] float CloseEnough = 0.01f;
     public bool extended;
-    public float extention;
+
 
     float[] Lengths;
     float Length;
@@ -76,14 +73,9 @@ public class IKLeg : MonoBehaviour
         Quaternion rootRot = (bones[0].parent != null) ? bones[0].parent.rotation : Quaternion.identity;
         Quaternion rootrotDiff = rootRot * Quaternion.Inverse(startRotRoot);
 
-
-        extention = (target - bones[0].position).magnitude / Length;
-
-        if (extention >= 1) {//(target - bones[0].position).sqrMagnitude >= Length * Length) {
-            extended = true;
-
+        if ((target - bones[0].position).sqrMagnitude >= Length * Length) {
             Vector3 dir = (target - poss[0]).normalized;
-
+            extended = true;
             for (int i = 1; i < poss.Length; i++) {
                 poss[i] = poss[i - 1] + dir * Lengths[i -1];
             }
@@ -100,7 +92,7 @@ public class IKLeg : MonoBehaviour
                     poss[b] = poss[b - 1] + (poss[b] - poss[b-1]).normalized * Lengths[b - 1];
                 }
 
-                if ((poss[BonesCount] - target).sqrMagnitude < delta * delta) {
+                if ((poss[BonesCount] - target).sqrMagnitude < CloseEnough * CloseEnough) {
                     break;
                 }
             }
