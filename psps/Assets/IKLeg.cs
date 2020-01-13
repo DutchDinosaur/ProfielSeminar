@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class IKLeg : MonoBehaviour
 {
+    public Vector3 target;
+
     [SerializeField] int BonesCount = 2;
-    [SerializeField] Transform Target;
-    [SerializeField] Transform Pole;
+    public Transform Target;
+    public Transform Pole;
     [SerializeField] Transform LastBone;
 
     [SerializeField, Range(0, 1)] float SnapStrength = 1;
 
-    [SerializeField] int iterations = 10;
+    [SerializeField] int iterations = 3;
     [SerializeField] float delta = 0.01f;
+
+    public bool extended;
+    public float extention;
 
     float[] Lengths;
     float Length;
@@ -29,6 +34,8 @@ public class IKLeg : MonoBehaviour
     }
 
     void Initialize() {
+        target = Target.position;
+
         bones = new Transform[BonesCount + 1];
         poss = new Vector3[BonesCount + 1];
         Lengths = new float[BonesCount];
@@ -36,7 +43,7 @@ public class IKLeg : MonoBehaviour
         startDir = new Vector3[BonesCount + 1];
         startRot = new Quaternion[BonesCount + 1];
 
-        startRotTarget = Target.rotation;
+        startRotTarget = Quaternion.identity;
 
         Length = 0;
 
@@ -46,7 +53,7 @@ public class IKLeg : MonoBehaviour
             startRot[i] = tr.rotation;
 
             if (i == BonesCount) {
-                startDir[i] = Target.position - tr.position;
+                startDir[i] = target - tr.position;
             }
             else {
                 Length += Lengths[i] = (bones[i + 1].position - tr.position).magnitude;
@@ -69,17 +76,23 @@ public class IKLeg : MonoBehaviour
         Quaternion rootRot = (bones[0].parent != null) ? bones[0].parent.rotation : Quaternion.identity;
         Quaternion rootrotDiff = rootRot * Quaternion.Inverse(startRotRoot);
 
-        if ((Target.position - bones[0].position).sqrMagnitude >= Length * Length) {
 
-            Vector3 dir = (Target.position - poss[0]).normalized;
+        extention = (target - bones[0].position).magnitude / Length;
+
+        if (extention >= 1) {//(target - bones[0].position).sqrMagnitude >= Length * Length) {
+            extended = true;
+
+            Vector3 dir = (target - poss[0]).normalized;
 
             for (int i = 1; i < poss.Length; i++) {
                 poss[i] = poss[i - 1] + dir * Lengths[i -1];
             }
         }
         else {
+            extended = false;
+
             for (int i = 0; i < iterations; i++) {
-                poss[BonesCount] = Target.position;
+                poss[BonesCount] = target;
                 for (int b = BonesCount - 1; b > 0; b--) {
                     poss[b] = poss[b + 1] + (poss[b] - poss[b+1]).normalized * Lengths[b];
                 }
@@ -87,7 +100,7 @@ public class IKLeg : MonoBehaviour
                     poss[b] = poss[b - 1] + (poss[b] - poss[b-1]).normalized * Lengths[b - 1];
                 }
 
-                if ((poss[BonesCount] - Target.position).sqrMagnitude < delta * delta) {
+                if ((poss[BonesCount] - target).sqrMagnitude < delta * delta) {
                     break;
                 }
             }
@@ -105,7 +118,7 @@ public class IKLeg : MonoBehaviour
 
         for (int i = 0; i < bones.Length; i++) {
             if (i == BonesCount) {
-                bones[i].rotation = Target.rotation * Quaternion.Inverse(startRotTarget) * startRot[i];
+                bones[i].rotation = Quaternion.identity * Quaternion.Inverse(startRotTarget) * startRot[i];
             }
             else {
                 bones[i].rotation = Quaternion.FromToRotation(startDir[i],poss[i + 1] - poss[i]) * startRot[i];
