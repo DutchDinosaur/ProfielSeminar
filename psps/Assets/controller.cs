@@ -32,7 +32,8 @@ public class controller : MonoBehaviour {
             spd *= runMultip;
             rotspd *= runMultip;
         }
+
         rb.MovePosition(transform.position + transform.forward * Input.GetAxis("Vertical") * Time.deltaTime * spd);
-        rb.MoveRotation(transform.rotation * Quaternion.Euler(Vector3.up * (rotspd * Input.GetAxis("Horizontal") * Time.deltaTime)));
+        rb.MoveRotation(transform.rotation * Quaternion.Euler(Vector3.up * rotspd * Input.GetAxis("Horizontal") * Time.deltaTime));
     }
 }
