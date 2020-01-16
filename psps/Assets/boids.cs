@@ -36,7 +36,7 @@ public class bboi : MonoBehaviour {
             if (Vector3.Distance(objects[i].transform.position,Vector3.zero) > spawnArea) {
                 objects[i].transform.position = new Vector3(-objects[i].transform.position.x, objects[i].transform.position.y,-objects[i].transform.position.z) * .99f;
             }
-            if (Vector3.Distance(objects[i].transform.position, Vector3.zero) < 2.99f)
+            if (Vector3.Distance(objects[i].transform.position, Vector3.zero) < 2.5f)
             {
                 objects[i].transform.position = Quaternion.Euler(Vector3.up * Random.Range(0, 360)) * (Vector3.forward * spawnArea);
             }

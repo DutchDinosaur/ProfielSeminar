@@ -528,7 +528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 9139904414860542515, guid: bd22f728f7d355c489d797abff39f318, type: 3}
-  count: 400
+  count: 200
   spawnHeigt: 2
   spawnArea: 90
   speed: 15
