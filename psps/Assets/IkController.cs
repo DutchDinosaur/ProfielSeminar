@@ -21,7 +21,7 @@ public class IkController : MonoBehaviour {
     Vector3 stepVector;
 
     void FixedUpdate() {
-        stepVector = (transform.position - previousPosition) * stepDistanceMultip;
+        stepVector = (transform.position - previousPosition).normalized * stepDistanceMultip;
 
         for (int i = 0; i < Leggs.Length; i++) {
             Leggs[i].target += (Targets[i] - Leggs[i].target) * moovementMult;
@@ -34,11 +34,11 @@ public class IkController : MonoBehaviour {
             }
         }
 
-        if (aaaa >= 30) {
+        if (aaaa >= 6) {
             doSteps(true);
             aaaa = 0;
         }
-        else if (aaaa == 15) {
+        else if (aaaa == 3) {
             doSteps(false);
         }
         aaaa += 1;
