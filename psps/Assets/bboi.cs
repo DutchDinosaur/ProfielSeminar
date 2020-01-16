@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bboi : MonoBehaviour {
+public class boids : MonoBehaviour {
 
     [SerializeField] GameObject prefab;
     [SerializeField] int count;
@@ -36,12 +36,8 @@ public class bboi : MonoBehaviour {
             if (Vector3.Distance(objects[i].transform.position,Vector3.zero) > spawnArea) {
                 objects[i].transform.position = new Vector3(-objects[i].transform.position.x, objects[i].transform.position.y,-objects[i].transform.position.z) * .99f;
             }
-            if (Vector3.Distance(objects[i].transform.position, Vector3.zero) < 2.99f)
-            {
-                objects[i].transform.position = Quaternion.Euler(Vector3.up * Random.Range(0, 360)) * (Vector3.forward * spawnArea);
-            }
 
-           float floorHeight = 0;
+            float floorHeight = 0;
             RaycastHit hit;
             if (Physics.Raycast(new Ray(objects[i].transform.position + objects[i].transform.up, -objects[i].transform.up), out hit, 10)) {
                 floorHeight = hit.point.y;
@@ -51,7 +47,27 @@ public class bboi : MonoBehaviour {
 
             rbs[i].MovePosition(objects[i].transform.position + objects[i].transform.forward * Time.deltaTime * speed);
 
-            objects[i].transform.LookAt(new Vector3(0, objects[i].transform.position.y, 0));
+            Collider[] hitColliders = Physics.OverlapSphere(objects[i].transform.position, overlapSphereRadius);
+            List<GameObject> boid = new List<GameObject>();
+            for (int c = 0; c < hitColliders.Length; c++) {
+                if (hitColliders[c].transform.parent != null) {
+                    if (hitColliders[c].tag == "boid" && hitColliders[c].transform.parent.gameObject != objects[i]) {
+                        boid.Add(hitColliders[c].transform.parent.gameObject);
+                    }
+                }
+            }
+
+            //Vector3 averagePos = Vector3.zero;
+            Vector3 averageDir = Vector3.zero;
+            Vector3 seperationDir = Vector3.zero;
+            for (int b = 0; b < boid.Count; b++) {
+                //averagePos += boid[b].transform.position;
+                averageDir += boid[b].transform.forward;
+                seperationDir += (objects[i].transform.position - boid[b].transform.position);
+            }
+
+            Vector3 lookat = objects[i].transform.position + averageDir.normalized + seperationDir.normalized + objects[i].transform.forward * seperationDamp;
+            objects[i].transform.LookAt(new Vector3(lookat.x, objects[i].transform.position.y, lookat.z));
         }
     }
     

@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/oofies.unity
-    guid: f4be095a2d0cdac46864bfbbf375d29f
+    path: Assets/Scenes/oofies - Copy.unity
+    guid: d0f1b0e854c88de4d9896cc08e762fdb
   m_configObjects: {}
