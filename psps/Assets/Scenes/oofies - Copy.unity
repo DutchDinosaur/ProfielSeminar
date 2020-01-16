@@ -493,7 +493,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1320559989}
-  - component: {fileID: 1320559990}
+  - component: {fileID: 1320559988}
   m_Layer: 0
   m_Name: Boids
   m_TagString: Untagged
@@ -501,6 +501,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1320559988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320559987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f20e0c1c66c0e494280740fb19b7fad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 9139904414860542515, guid: bd22f728f7d355c489d797abff39f318, type: 3}
+  count: 200
+  spawnHeigt: 2
+  spawnArea: 90
+  speed: 15
+  hoverForce: 1
+  hoverHeight: 2
+  overlapSphereRadius: 2
+  seperationDamp: 10
 --- !u!4 &1320559989
 Transform:
   m_ObjectHideFlags: 0
@@ -515,27 +536,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1320559990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320559987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 505884f37114392489039028f395ed55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 9139904414860542515, guid: bd22f728f7d355c489d797abff39f318, type: 3}
-  count: 200
-  spawnHeigt: 2
-  spawnArea: 90
-  speed: 15
-  hoverForce: 1
-  hoverHeight: 2
-  overlapSphereRadius: 2
-  seperationDamp: 10
 --- !u!1 &1714168337
 GameObject:
   m_ObjectHideFlags: 0
